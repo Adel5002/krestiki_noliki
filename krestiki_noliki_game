@@ -1,0 +1,82 @@
+board = [[' '] * 3 for i in range(3)]
+
+
+def draw_board():
+    print(f"       0     1    2")
+    print("-" * 21)
+
+    for i in range(3):
+        print(f"  {i}  | {board[i][0]}  |  {board[i][1]} |  {board[i][2]} |")
+        print("-" * 21)
+
+
+draw_board()
+
+
+def question():
+    while True:
+        user_input = input('Введите координаты =>').split()
+        if len(user_input) != 2:
+            print('** Пожалуйста введите 2 координаты **')
+            continue
+        if not(user_input[0].isdigit() and user_input[1].isdigit()):
+            print('** Введите числа **')
+            continue
+        x, y = map(int, user_input)
+        if not(x >= 0 and x < 3 and y >= 0 and y<3):
+            print('** Вы вышли за диапозон **')
+            continue
+        if board[x][y] !=' ':
+            print('** Клетка занята **')
+            continue
+
+        return x, y
+
+question()
+
+
+
+def check_win():
+    win_cord = (((0, 0), (0, 1), (0, 2)), ((1, 0), (1, 1), (1, 2)), ((2, 0), (2, 1), (2, 2)),
+                ((0, 2), (1, 1), (2, 0)), ((0, 0), (1, 1), (2, 2)), ((0, 0), (1, 0), (2, 0)),
+                ((0, 1), (1, 1), (2, 1)), ((0, 2), (1, 2), (2, 2)))
+    for cord in win_cord:
+        symbols = []
+        for c in cord:
+            symbols.append(board[c[0]][c[1]])
+        if symbols == ["X", "X", "X"]:
+            print("Выиграл X!!!")
+            return True
+        if symbols == ["0", "0", "0"]:
+            print("Выиграл 0!!!")
+            return True
+    return False
+
+
+
+board = [[' '] * 3 for i in range(3)]
+num = 0
+while True:
+    num += 1
+
+    draw_board()
+
+    if num % 2 == 1:
+        print("** Ходит крестик **")
+    else:
+        print("** Ходит нолик **")
+
+    x, y = question()
+
+    if num % 2 == 1:
+        board[x][y] = "X"
+    else:
+        board[x][y] = "0"
+
+    if check_win():
+        break
+
+    if num == 9:
+        print("** Ничья **")
+        break
+
